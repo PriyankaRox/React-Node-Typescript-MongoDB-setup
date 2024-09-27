@@ -8,7 +8,10 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 5000;
 //connect to MongoDB database
-const MongoDB_Connection_String = `mongodb+srv://priyankavrokhade:Priyanka%40123@cluster0.lfih2iu.mongodb.net/EmployeeDB?retryWrites=true&w=majority`;
+const MongoDB_Connection_String = process.env.MONGODB_URI;
+if (!MongoDB_Connection_String) {
+    throw new Error("MongoDB URL not defined");
+}
 const connectToMongoDB = async () => {
     try {
         await mongoose.connect(MongoDB_Connection_String);
@@ -26,7 +29,7 @@ app.use(cors());
 app.use(cookieParser());
 app.use("/api", employeeRouter);
 app.get("/", (req, res) => {
-    res.status(200).send("Welcome to Backend! with MongoDB!");
+    res.status(200).send("Welcome to Backend! with MongoDB! haiya");
 });
 app.listen(port, async () => {
     console.log(`App is listening at port:${port}`);
